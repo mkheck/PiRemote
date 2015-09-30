@@ -23,7 +23,14 @@
  */
 package org.thehecklers.piremote.model;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /** Reading is a bean to store the values coming from the Arduino
  * 
@@ -40,7 +47,8 @@ public class Reading {
             PRESSURE = 7,
             STATUS = 8;
 
-    private final Gson gson = new Gson();
+    //private final Gson gson = new Gson();
+    private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     private Integer id;
     private short node;
@@ -118,11 +126,11 @@ public class Reading {
         this.volts = volts;
     }
 
-    public double getLuminosity() {
+    public double getLum() {
         return lum;
     }
 
-    public void setLuminosity(double lum) {
+    public void setLum(double lum) {
         this.lum = lum;
     }
 
@@ -167,7 +175,16 @@ public class Reading {
     }
     
     public String toJson() {
-        return gson.toJson(this);
+        //return gson.toJson(this);
+        String json = "";
+        
+        try {
+            json = objectWriter.writeValueAsString(this);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(Reading.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return json;
     }
     
     @Override

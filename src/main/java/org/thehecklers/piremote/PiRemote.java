@@ -257,7 +257,7 @@ public class PiRemote extends Observable {
                             newBean.setVolts(Double.parseDouble(values[x]) / 1000);
                             break;
                         case Reading.LUMINOSITY:
-                            newBean.setLuminosity(Double.parseDouble(values[x]) / 100);
+                            newBean.setLum(Double.parseDouble(values[x]) / 100);
                             break;
                         case Reading.WINDDIR:
                             newBean.setWindDir(Integer.parseInt(values[x]));
