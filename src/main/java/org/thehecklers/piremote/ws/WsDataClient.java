@@ -23,26 +23,18 @@
  */
 package org.thehecklers.piremote.ws;
 
+import org.thehecklers.piremote.PiRemote;
+import org.thehecklers.piremote.model.Reading;
+
+import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.websocket.ClientEndpoint;
-import javax.websocket.ClientEndpointConfig;
-import javax.websocket.ContainerProvider;
-import javax.websocket.DeploymentException;
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
-import org.thehecklers.piremote.PiRemote;
+
 import static org.thehecklers.piremote.PiRemote.logIt;
-import org.thehecklers.piremote.model.Reading;
 
 /**
  * WSDataClient connects with Cloud application service via WebSocket. It
@@ -54,8 +46,6 @@ import org.thehecklers.piremote.model.Reading;
 //extends Endpoint
 public class WsDataClient implements Observer {
     private Session session = null;
-    // Initialize Gson for JSON bundling/stringification  :-)
-    //private final Gson gson = new Gson();
     private WebSocketContainer container;
     private boolean isConnected = false;
     private String uriWeb;
@@ -76,9 +66,7 @@ public class WsDataClient implements Observer {
 
     private void connectToWebSocketServer() throws Exception {
         try {
-            logIt("connectToWebSocketServer 1");
             container = ContainerProvider.getWebSocketContainer();
-            logIt("connectToWebSocketServer 2");
 
             logIt("Connecting to " + uriWeb);
             session = container.connectToServer(WsDataClient.class, URI.create(uriWeb));
@@ -117,17 +105,17 @@ public class WsDataClient implements Observer {
     
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("Data WebSocket connected to endpoint: " + session.getBasicRemote());
+        logIt("Data WebSocket connected to endpoint: " + session.getBasicRemote());
     }
  
     @OnMessage
     public void onMessage(String message) {
-        System.out.println(message);
+        logIt(message);
     }
 
     @OnError
     public void onError(Throwable t) {
-        System.out.println("Error in Data WebSocketController: " + t.toString());
+        logIt("Error in Data WebSocketController: " + t.toString());
     }
 
     @Override

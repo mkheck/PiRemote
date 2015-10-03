@@ -49,43 +49,40 @@ import static org.thehecklers.piremote.PiRemote.logIt;
  *
  * @author Mark Heckler - 2015
  */
-//@ClientEndpoint
-public class WsControlClient extends Endpoint {
+@ClientEndpoint
+public class WsControlClient {
     private Session session = null;
+    private WebSocketContainer container;
     private boolean isConnected = false;
-    private String uriWeb;
-    private String nodeId;
-    private PiRemote remote;
+    static private String uriWeb;
+    static private String nodeId;
+    static private PiRemote remote;
 
-//    public WsControlClient() {
-//        // No-parameter constructor for testing
-//        logIt("In no parameter constructor of Control WS client.");
-//    }
+    public WsControlClient() {
+        // No-parameter constructor for testing
+        logIt("In no parameter constructor of Control WS client.");
+    }
     
     public WsControlClient(String uriWeb, String nodeId, PiRemote remote) {
-        this.uriWeb = uriWeb.endsWith("/") ? uriWeb + "control" : uriWeb + "/" + "control";
-        this.nodeId = nodeId;
-        this.remote = remote;
+        WsControlClient.uriWeb = uriWeb.endsWith("/") ? uriWeb + "control" : uriWeb + "/" + "control";
+        WsControlClient.nodeId = nodeId;
+        WsControlClient.remote = remote;
         try {
             connectToWebSocketServer();
         } catch (Exception e) {
-            logIt("Error connecting to Control WebSocketServer: " + e.toString());
+            logIt("Error connecting to Control WebSocketServer: " + e.getLocalizedMessage());
         }
     }
 
     private void connectToWebSocketServer() throws Exception {
-        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-
         try {
+            container = ContainerProvider.getWebSocketContainer();
+
             logIt("Connecting to " + uriWeb);
-            //session = container.connectToServer(WsControlClient.class, URI.create(uriWeb));
-            ClientEndpointConfig cfg = ClientEndpointConfig.Builder.create().build();
-            cfg.getUserProperties().put("org.apache.tomcat.websocket.IO_TIMEOUT_MS", "0");
-            
-            //session = container.connectToServer(this, URI.create(uriWeb));
-            session = container.connectToServer(this, cfg, URI.create(uriWeb));
-        } catch (IOException | DeploymentException | IllegalStateException e) {
-            logIt("Error connecting, " + uriWeb + ": " + e.toString());
+            session = container.connectToServer(WsControlClient.class, URI.create(uriWeb));
+        } catch (Exception e) {
+            //(IOException | DeploymentException | IllegalStateException e) {
+            logIt("Error connecting, " + uriWeb + ": " + e.getLocalizedMessage());
             isConnected = false;
             return;
         }
@@ -151,12 +148,12 @@ public class WsControlClient extends Endpoint {
  
     @OnError
     public void onError(Throwable t) {
-        logIt("Error in Control WebSocketController: " + t.toString());
+        logIt("Error in Control WebSocketController: " + t.getLocalizedMessage());
     }    
 
-    @Override
-    public void onOpen(Session sn, EndpointConfig ec) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("Opening /control endpoint...");
-    }
+//    @Override
+//    public void onOpen(Session sn, EndpointConfig ec) {
+//        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        logIt("Opening /control endpoint...");
+//    }
 }

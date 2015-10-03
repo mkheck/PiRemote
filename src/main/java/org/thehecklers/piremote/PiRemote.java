@@ -135,7 +135,7 @@ public class PiRemote extends Observable {
             wsData = new WsDataClient(uriWebSocket);
             this.addObserver(wsData);
 
-            //wsControl = new WsControlClient(uriWebSocket, String.valueOf(nodeId), this);
+            wsControl = new WsControlClient(uriWebSocket, String.valueOf(nodeId), this);
         }
         
         String uriReadingMqtt = getProperty("uriMQTT");
