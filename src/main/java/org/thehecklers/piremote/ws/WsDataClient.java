@@ -43,7 +43,6 @@ import static org.thehecklers.piremote.PiRemote.logIt;
  * @author Mark Heckler - 2015
  */
 @ClientEndpoint
-//extends Endpoint
 public class WsDataClient implements Observer {
     private Session session = null;
     private WebSocketContainer container;
@@ -70,13 +69,6 @@ public class WsDataClient implements Observer {
 
             logIt("Connecting to " + uriWeb);
             session = container.connectToServer(WsDataClient.class, URI.create(uriWeb));
-            
-//            ClientEndpointConfig cfg = ClientEndpointConfig.Builder.create().build();
-//            cfg.getUserProperties().put("org.apache.tomcat.websocket.IO_TIMEOUT_MS", "0");
-//            container.setDefaultMaxSessionIdleTimeout(0);
-//            System.out.println("userProperties:" + cfg.getUserProperties().toString());
-//            
-//            session = container.connectToServer(this, cfg, URI.create(uriWeb));
         } catch (Exception e) {
             //(IOException | DeploymentException | IllegalStateException e)
             logIt("Error connecting, " + uriWeb + ": " + e.getLocalizedMessage());
@@ -144,8 +136,8 @@ public class WsDataClient implements Observer {
                     // These cases all denote lack of/failed connection
                     isConnected = false;
                 }
-            } catch (IOException | IllegalStateException ex) {
-                logIt("ERROR posting reading to Data WebSocket: " + ex.toString());
+            } catch (IOException | IllegalStateException e) {
+                logIt("ERROR posting reading to Data WebSocket: " + e.getLocalizedMessage());
                 isConnected = false;
             }
         } else {
@@ -153,7 +145,7 @@ public class WsDataClient implements Observer {
             try {
                 connectToWebSocketServer();
             } catch (Exception e) {
-                logIt("Error connecting to Data WebSocket: " + e.toString());
+                logIt("Error connecting to Data WebSocket: " + e.getLocalizedMessage());
             }
         }
     }

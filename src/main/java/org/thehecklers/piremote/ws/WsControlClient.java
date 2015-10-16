@@ -26,6 +26,8 @@ package org.thehecklers.piremote.ws;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.ClientEndpoint;
@@ -40,6 +42,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import org.thehecklers.piremote.PiRemote;
+import org.thehecklers.piremote.model.Reading;
+
 import static org.thehecklers.piremote.PiRemote.logIt;
 
 /**
@@ -50,7 +54,7 @@ import static org.thehecklers.piremote.PiRemote.logIt;
  * @author Mark Heckler - 2015
  */
 @ClientEndpoint
-public class WsControlClient {
+public class WsControlClient implements Observer {
     private Session session = null;
     private WebSocketContainer container;
     private boolean isConnected = false;
@@ -149,7 +153,44 @@ public class WsControlClient {
     @OnError
     public void onError(Throwable t) {
         logIt("Error in Control WebSocketController: " + t.getLocalizedMessage());
-    }    
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // Periodic check to verify the Control WebSocket is still connected; if not, reconnect
+
+        if (isConnected) {
+            try {
+                if (session != null
+                        && session.isOpen()
+                        && session.getBasicRemote() != null) {
+                    isConnected = true;
+                } else {
+                    if (session == null) {
+                        logIt("Control WebSocket has session NULL");
+                    } else {
+                        if (!session.isOpen()) {
+                            logIt("Control WebSocket has session CLOSED");
+                        } else {
+                            logIt("Control WebSocket has BasicRemote NULL");
+                        }
+                    }
+                    // These cases all denote lack of/failed connection
+                    isConnected = false;
+                }
+            } catch (Exception e) {
+                logIt("Exception in Control WebSocket: " + e.getLocalizedMessage());
+                isConnected = false;
+            }
+        } else {
+            logIt("Trying to reconnect to Control WebSocket...");
+            try {
+                connectToWebSocketServer();
+            } catch (Exception e) {
+                logIt("Error connecting to Data WebSocket: " + e.getLocalizedMessage());
+            }
+        }
+    }
 
 //    @Override
 //    public void onOpen(Session sn, EndpointConfig ec) {
