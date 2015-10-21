@@ -64,7 +64,7 @@ public class WsControlClient implements Observer {
 
     public WsControlClient() {
         // No-parameter constructor for testing
-        logIt("In no parameter constructor of Control WS client.");
+        //logIt("In no parameter constructor of Control WS client.");
     }
     
     public WsControlClient(String uriWeb, String nodeId, PiRemote remote) {

@@ -51,7 +51,7 @@ public class WsDataClient implements Observer {
 
     public WsDataClient() {
         // No-parameter constructor for testing
-        logIt("In no parameter constructor.");
+        //logIt("In no parameter constructor.");
     }
     
     public WsDataClient(String uriWeb) {
