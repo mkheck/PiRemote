@@ -82,3 +82,4 @@ public abstract class MQTTPublisher {
         publish(subTopic, msgText);
     }
 }
+
