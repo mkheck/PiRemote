@@ -93,10 +93,6 @@ public class PiRemote extends Observable {
 
         String nodeProp = getProperty("nodeId");
         if (nodeProp.isEmpty()) {
-//            // Get out of here!
-//            logIt("ERROR: Property 'nodeId' missing from PiRemote.properties file.");
-//            Exception e = new Exception("ERROR: Property 'nodeId' missing from PiRemote.properties file.");
-//            throw e;
             logIt("Default nodeId=0");
             nodeId = 0; // It's a default for a reason. :)
         } else {
@@ -125,10 +121,6 @@ public class PiRemote extends Observable {
         String uriWebSocket = getProperty("uriWebSocket");
         if (uriWebSocket.isEmpty()) {
             hasWsConnection = false;
-//            // Get out of here!
-//            logIt("ERROR: Property 'uriWebSocket' missing from PiRemote.properties file.");
-//            Exception e = new Exception("ERROR: Property 'uriWebSocket' missing from PiRemote.properties file.");
-//            throw e;
         } else {
             hasWsConnection = true;
 
@@ -142,10 +134,6 @@ public class PiRemote extends Observable {
         String uriReadingMqtt = getProperty("uriMQTT");
         if (uriReadingMqtt.isEmpty()) {
             //hasMqttConnection = false;
-//            // Get out of here!
-//            logIt("ERROR: Property 'uriReadingsMqtt' missing from PiRemote.properties file.");
-//            Exception e = new Exception("ERROR: Property 'uriReadingsMqtt' missing from PiRemote.properties file.");
-//            throw e;
         } else {
             //hasMqttConnection = true;
             readingMqtt = new ReadingPublisher(uriReadingMqtt, String.valueOf(nodeId), "reading");
@@ -364,8 +352,6 @@ public class PiRemote extends Observable {
                     } catch (Exception ex) {
                         Logger.getLogger(PiRemote.class.getName()).log(Level.SEVERE, null, ex);
                         logIt("Exception writing to serial port: " + ex.getLocalizedMessage());
-//                    } finally {
-//                        setChanged();
                     }
                 }
             }
