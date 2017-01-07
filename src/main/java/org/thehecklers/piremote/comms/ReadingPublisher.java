@@ -91,16 +91,10 @@ public class ReadingPublisher extends MQTTPublisher implements Observer {
             client.publish(this.getTopTopic() + "/" + "temp", msg);
             msg.setPayload(String.valueOf(reading.getVolts()).getBytes());
             client.publish(this.getTopTopic() + "/" + "volts", msg);
-            msg.setPayload(String.valueOf(reading.getLum()).getBytes());
-            client.publish(this.getTopTopic() + "/" + "luminosity", msg);
-            msg.setPayload(String.valueOf(reading.getWindDir()).getBytes());
-            client.publish(this.getTopTopic() + "/" + "winddir", msg);
-            msg.setPayload(String.valueOf(reading.getWindSpeed()).getBytes());
-            client.publish(this.getTopTopic() + "/" + "windspeed", msg);
-            msg.setPayload(String.valueOf(reading.getRainfall()).getBytes());
-            client.publish(this.getTopTopic() + "/" + "rainfall", msg);
-            msg.setPayload(String.valueOf(reading.getPressure()).getBytes());
-            client.publish(this.getTopTopic() + "/" + "pressure", msg);
+            msg.setPayload(String.valueOf(reading.getAmps()).getBytes());
+            client.publish(this.getTopTopic() + "/" + "amps", msg);
+//            msg.setPayload(String.valueOf(reading.getPressure()).getBytes());
+//            client.publish(this.getTopTopic() + "/" + "pressure", msg);
             msg.setPayload(String.valueOf(reading.getStatus()).getBytes());
             client.publish(this.getTopTopic() + "/" + "status", msg);
         } catch (MqttException ex) {

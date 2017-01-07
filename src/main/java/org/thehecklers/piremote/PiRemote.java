@@ -245,21 +245,12 @@ public class PiRemote extends Observable {
                         case Reading.VOLTAGE:
                             newBean.setVolts(Double.parseDouble(values[x]) / 1000);
                             break;
-                        case Reading.LUMINOSITY:
-                            newBean.setLum(Double.parseDouble(values[x]) / 100);
+                        case Reading.CURRENT:
+                            newBean.setAmps(Double.parseDouble(values[x]));
                             break;
-                        case Reading.WINDDIR:
-                            newBean.setWindDir(Integer.parseInt(values[x]));
-                            break;
-                        case Reading.WINDSPEED:
-                            newBean.setWindSpeed(Double.parseDouble(values[x]) / 100);
-                            break;
-                        case Reading.RAINFALL:
-                            newBean.setRainfall(Double.parseDouble(values[x]) / 100);
-                            break;
-                        case Reading.PRESSURE:
-                            newBean.setPressure(Long.parseLong(values[x]));
-                            break;
+//                        case Reading.PRESSURE:
+//                            newBean.setPressure(Long.parseLong(values[x]));
+//                            break;
                         case Reading.STATUS: 
                             newBean.setStatus(Integer.parseInt(values[x]));
                             break;

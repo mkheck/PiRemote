@@ -23,14 +23,11 @@
  */
 package org.thehecklers.piremote.model;
 
-//import com.google.gson.Gson;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /** Reading is a bean to store the values coming from the Arduino
  * 
@@ -40,21 +37,16 @@ public class Reading {
     public static final int HUMIDITY = 0, 
             TEMPERATURE = 1,
             VOLTAGE = 2,
-            LUMINOSITY = 3,
-            WINDDIR = 4,
-            WINDSPEED = 5,
-            RAINFALL = 6,
-            PRESSURE = 7,
-            STATUS = 8;
+            CURRENT = 3,
+            STATUS = 4;
 
-    //private final Gson gson = new Gson();
     private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     private Integer id;
     private short node;
-    private double hum, temp, volts, lum, windSpeed, rainfall;
-    private long pressure;
-    private int windDir, status;
+    private double hum, temp, volts, amps;
+    //private long pressure;
+    private int status;
 
     public Reading() {
         //this.id = -1;
@@ -62,27 +54,20 @@ public class Reading {
         this.hum = -1d;
         this.temp = -1d;
         this.volts = -1d;
-        this.lum = -1d;
-        this.windDir = -1;
-        this.windSpeed = -1d;
-        this.rainfall = -1d;
-        this.pressure = -1l;
+        this.amps = -1d;
+        //this.pressure = -1l;
         this.status = 0;
     }
 
     public Reading(Integer id, short node, double hum, double temp, 
-            double volts, double lum, int windDir, double windSpeed, 
-            double rainfall, long pressure, int status) {
+            double volts, double amps, int status) {
         this.id = id;
         this.node = node;
         this.hum = hum;
         this.temp = temp;
         this.volts = volts;
-        this.lum = lum;
-        this.windDir = windDir;
-        this.windSpeed = windSpeed;
-        this.rainfall = rainfall;
-        this.pressure = pressure;
+        this.amps = amps;
+        //this.pressure = pressure;
         this.status = status;
     }
 
@@ -126,45 +111,21 @@ public class Reading {
         this.volts = volts;
     }
 
-    public double getLum() {
-        return lum;
+    public double getAmps() {
+        return amps;
     }
 
-    public void setLum(double lum) {
-        this.lum = lum;
+    public void setAmps(double amps) {
+        this.amps = amps;
     }
 
-    public int getWindDir() {
-        return windDir;
-    }
-    
-    public void setWindDir(int windDir) {
-        this.windDir = windDir;                
-    }
+//    public long getPressure() {
+//        return pressure;
+//    }
 
-    public double getWindSpeed() {
-        return windSpeed;
-    }
-    
-    public void setWindSpeed(double windSpeed) {
-        this.windSpeed = windSpeed;
-    }
-    
-    public double getRainfall() {
-        return rainfall;
-    }
-    
-    public void setRainfall(double rainfall) {
-        this.rainfall = rainfall;
-    }
-    
-    public long getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(long pressure) {
-        this.pressure = pressure;
-    }
+//    public void setPressure(long pressure) {
+//        this.pressure = pressure;
+//    }
     
     public int getStatus() {
         return status;
@@ -175,7 +136,6 @@ public class Reading {
     }
     
     public String toJson() {
-        //return gson.toJson(this);
         String json = "";
         
         try {
@@ -191,9 +151,8 @@ public class Reading {
     public String toString() {
         return "Id=" + id + ", node=" + node + 
                 ", hum=" + hum + ", temp=" + temp + 
-                ", volts=" + volts + ", luminosity=" + lum + 
-                ", windDir=" + windDir + ", windSpeed=" + windSpeed + 
-                ", rainfall=" + rainfall + ", pressure=" + pressure +
+                ", volts=" + volts + ", current=" + amps +
+                //", pressure=" + pressure +
                 ", status" + status + ".";
     }
 }
